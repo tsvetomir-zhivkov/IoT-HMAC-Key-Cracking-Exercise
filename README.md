@@ -3,6 +3,8 @@
 ## Overview
 This project demonstrates how a buffer overrun/overflow vulnerability in an Internet of Things (IoT) device can be exploited to recover a secret keyphrase. Determining the keyphrase is accomplished by sending crafted commands of varying lenghts over a TCP connection, and analyzing the responses. Once the keyphrase is recovered, the attacker can generate valid message authentication codes (HMACs), allowing them to impersonate legitimate users and execute further attacks.
 
+## Technologies
+
 ## Features
 - **TCP communication**: Establish a connection with the IoT device and exchange commands
 - **HMAC authentication** - Generate message authentication codes to communicate with the device
@@ -13,7 +15,7 @@ This project demonstrates how a buffer overrun/overflow vulnerability in an Inte
 ## How the IoT Device Work
 The IoT device receives commands over a TCP connection using the following format:
 ```
-<user>;<command>;<hex_hmac>\n'
+<user>;<command>;<hex_hmac>\n
 ```
 
 Where:
@@ -26,11 +28,15 @@ The HMAC is generated using a message in the following format:
 ```
 ClientCmd|<user>|<command>
 ```
-The user and command correspond to the values in the original request. The HMAC is computed using a secret key shared with authorized users.
+The `user` and `command` correspond to the values in the original request. The HMAC is computed using a secret key shared with authorized users.
 
 The IoT device uses the HMAC to verify the message authenticity before executing commands. However, its input-handling implementation contains a buffer overflow vulnerability that undermines this authentication mechanism.
 
 ## IoT Vulnerability: Buffer Overflow
+
+
+The device does not properly validate the lngth of incoming commands before copying or processing them in memory. 
+
 
 IoT Insecurity: Buffer Overrun
 An Internet-of-Things (IoT) device has a minor vulnerability called **Buffer Overrun** that will be exploited. It is given some prior information, such as key length, message formats and how does the device handle 
