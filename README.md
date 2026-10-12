@@ -1,3 +1,5 @@
+# IoT device Buffer Overflow Exploitation
+
 ## Overview
 This project demonstrates how a buffer overrun/overflow vulnerability in an Internet of Things (IoT) device can be exploited to recover a secret keyphrase. Determining the keyphrase is accomplished by sending crafted commands of varying lenghts over a TCP connection, and analyzing the responses. Once the keyphrase is recovered, the attacker can generate valid message authentication codes (HMACs), allowing them to impersonate legitimate users and execute further attacks.
 
@@ -10,19 +12,20 @@ This project demonstrates how a buffer overrun/overflow vulnerability in an Inte
 
 ## How the IoT Device Work
 The IoT device receives commands over a TCP connection using the following format:
-
-'<user>;<command>;<hec_hmac>\n'
+```
+<user>;<command>;<hex_hmac>\n'
+```
 
 Where:
-- 'user' is the sender's identifier.
-- 'command' is the command to execute.
-- 'hex_hmac' is the hexademical representation of the HMAC used to authenticate the message.
-- '\n' terminates the message.
+- `user` is the sender's identifier.
+- `command` is the command to execute.
+- `hex_hmac` is the hexademical representation of the HMAC used to authenticate the message.
+- `\n` terminates the message.
 
 The HMAC is generated using a message in the following format:
-
-'ClientCmd|<user>|<command>'
-
+```
+ClientCmd|<user>|<command>
+```
 The user and command correspond to the values in the original request. The HMAC is computed using a secret key shared with authorized users.
 
 The IoT device uses the HMAC to verify the message authenticity before executing commands. However, its input-handling implementation contains a buffer overflow vulnerability that undermines this authentication mechanism.
