@@ -40,7 +40,7 @@ int find_comLEN(const char* server_ip, int port) {
     while (strstr(status, hmac_error) == NULL) {
         
         // Create TCP socket
-        int sock = socket(AF_INET, SOCK_STREAM, 0);  // AF_INTER - between processes on different hosts; SOCK_STREAM - TCP
+        int sock = socket(AF_INET, SOCK_STREAM, 0);  // AF_INET - between processes on different hosts; SOCK_STREAM - TCP
         if (sock < 0) {
             fprintf(stderr, "find_comLEN #1\n");
             return 1;
@@ -51,8 +51,9 @@ int find_comLEN(const char* server_ip, int port) {
 
         memset(&server, 0, sizeof(server)); // Fill server with only zeros
         server.sin_family = AF_INET;
-        server.sin_port = htons(port); // Host to Network Short  (from host byte order to network byte order) / from little-endian to big-endian
+        server.sin_port = htons(port); // from little-endian to big-endian system
 
+        // Convert from presentation format to a binary network format
         if (inet_pton(AF_INET, server_ip, &server.sin_addr) <= 0) {
             fprintf(stderr, "find_comLEN #2\n");
             close(sock);
@@ -305,7 +306,7 @@ int compute_msg_and_key(char* msg, int ind, char ch) {
 int crack(const char* server_ip, int port, int ind, char ch) {
        
     // Create TCP socket
-    int sock = socket(AF_INET, SOCK_STREAM, 0);  // AF_INTER - between processes on different hosts; SOCK_STREAM - TCP
+    int sock = socket(AF_INET, SOCK_STREAM, 0);  // AF_INET - between processes on different hosts; SOCK_STREAM - TCP
     if (sock < 0) {
         fprintf(stderr, "crack #1\n");
         return 1;
