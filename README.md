@@ -30,4 +30,16 @@ The HMAC is generated using the _SHA256_ cryptographic hash function and a secre
 The IoT device authenticates the message using the HMAC before executing the specified command.
 
 ## Iot Vulnerability: Buffer Overrun
-The IoT device 
+The buffer overrun vulnerability arises from the insufficient input validation in the device. Additionally, the secret key is stored in a memory region adjacent to the input buffer, allowing an attacker to recover it by exploiting the vulnerability.
+
+## Vulnerability Exploitation
+Initially, the keyphrase is overwritten with the character `a` by overflowing the input buffer with a string of a specified length. In each subsequent iteration, the command length is decreased until the device no longer accepts it. This process determines the number of cahracters needed to overwrite the keyphrase without affecting the momery beyond it.
+
+
+
+Thereafter
+
+
+
+## Video
+
